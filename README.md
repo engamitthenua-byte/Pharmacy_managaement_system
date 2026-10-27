@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pharmacy Management System (AIP Academic Project)
 
 A complete, database-driven web application built with **Java 17**, **Jakarta Servlets**, **JSP**, **JDBC**, and **MySQL**, designed for deployment on **Apache Tomcat 10.1**.
@@ -245,3 +246,6 @@ The resulting `pharmacy-management.war` in the `target/` directory can be copied
 
 ## 7. License & Academic Attribution
 Developed for the Advanced Internet Programming (AIP) laboratory coursework. Free for educational study and examination evaluation.
+=======
+# Pharmacy_managaement_system
+>>>>>>> 3ee2785d61359302d290582d13bee635fa6d6211
