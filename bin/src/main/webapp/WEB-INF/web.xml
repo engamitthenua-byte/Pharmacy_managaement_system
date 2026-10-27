@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Pharmacy Management System</display-name>
+    <description>A complete database-driven Pharmacy Management System</description>
+
+    <!-- ============================================================
+         Session Configuration
+         ============================================================ -->
+    <session-config>
+        <!-- Session expires after 30 minutes of inactivity -->
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <!-- Set secure=true if using HTTPS -->
+            <!-- <secure>true</secure> -->
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- ============================================================
+         Authentication Filter — protects all URLs
+         ============================================================ -->
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.pharmacy.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- ============================================================
+         Servlet Definitions
+         ============================================================ -->
+
+    <!-- Login / Logout -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.DashboardServlet</servlet-class>
+    </servlet>
+
+    <!-- Medicine -->
+    <servlet>
+        <servlet-name>MedicineServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.MedicineServlet</servlet-class>
+    </servlet>
+
+    <!-- Category -->
+    <servlet>
+        <servlet-name>CategoryServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.CategoryServlet</servlet-class>
+    </servlet>
+
+    <!-- Supplier -->
+    <servlet>
+        <servlet-name>SupplierServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.SupplierServlet</servlet-class>
+    </servlet>
+
+    <!-- Customer -->
+    <servlet>
+        <servlet-name>CustomerServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.CustomerServlet</servlet-class>
+    </servlet>
+
+    <!-- Purchase -->
+    <servlet>
+        <servlet-name>PurchaseServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.PurchaseServlet</servlet-class>
+    </servlet>
+
+    <!-- Sales -->
+    <servlet>
+        <servlet-name>SalesServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.SalesServlet</servlet-class>
+    </servlet>
+
+    <!-- Inventory -->
+    <servlet>
+        <servlet-name>InventoryServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.InventoryServlet</servlet-class>
+    </servlet>
+
+    <!-- Reports -->
+    <servlet>
+        <servlet-name>ReportsServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.ReportsServlet</servlet-class>
+    </servlet>
+
+    <!-- Admin Profile -->
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>com.pharmacy.controller.ProfileServlet</servlet-class>
+    </servlet>
+
+    <!-- ============================================================
+         URL Mappings
+         ============================================================ -->
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MedicineServlet</servlet-name>
+        <url-pattern>/medicines</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryServlet</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupplierServlet</servlet-name>
+        <url-pattern>/suppliers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerServlet</servlet-name>
+        <url-pattern>/customers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseServlet</servlet-name>
+        <url-pattern>/purchases</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalesServlet</servlet-name>
+        <url-pattern>/sales</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InventoryServlet</servlet-name>
+        <url-pattern>/inventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportsServlet</servlet-name>
+        <url-pattern>/reports</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============================================================
+         Welcome Page
+         ============================================================ -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- ============================================================
+         Error Pages
+         ============================================================ -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error/500.jsp</location>
+    </error-page>
+
+</web-app>
