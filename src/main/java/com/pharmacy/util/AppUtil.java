@@ -43,6 +43,13 @@ public class AppUtil {
     }
 
     /**
+     * Alias for generateSalesInvoiceNumber
+     */
+    public static String generateSaleInvoiceNumber(long sequence) {
+        return generateSalesInvoiceNumber(sequence);
+    }
+
+    /**
      * Formats a LocalDate for display: dd-MM-yyyy
      */
     public static String formatDateDisplay(LocalDate date) {

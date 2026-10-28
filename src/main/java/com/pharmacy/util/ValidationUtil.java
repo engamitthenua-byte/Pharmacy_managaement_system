@@ -114,6 +114,18 @@ public class ValidationUtil {
         }
     }
 
+    /** Parses a BigDecimal with a default fallback value if null, empty, or invalid. */
+    public static BigDecimal parseBigDecimal(String value, BigDecimal defaultVal) {
+        if (value == null || value.trim().isEmpty()) {
+            return defaultVal;
+        }
+        try {
+            return new BigDecimal(value.trim());
+        } catch (NumberFormatException e) {
+            return defaultVal;
+        }
+    }
+
     /** Returns error string if value is null or negative. */
     public static String requirePositiveDecimal(BigDecimal value, String fieldName) {
         if (value == null || value.compareTo(BigDecimal.ZERO) <= 0) {

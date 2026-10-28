@@ -30,7 +30,7 @@ public class ReportsDAO {
                      "SUM(total_amount) AS total_revenue, SUM(discount) AS total_discount " +
                      "FROM sales WHERE sale_date BETWEEN ? AND ? " +
                      "GROUP BY sale_date ORDER BY sale_date DESC";
-        return executeQuery(sql, Date.valueOf(from), Date.valueOf(to));
+        return executeQuery(sql, java.sql.Date.valueOf(from), java.sql.Date.valueOf(to));
     }
 
     /** Monthly sales report — one row per month. */
@@ -50,7 +50,7 @@ public class ReportsDAO {
                      "JOIN purchase_items pi ON pi.purchase_id = p.id " +
                      "WHERE p.purchase_date BETWEEN ? AND ? " +
                      "GROUP BY p.id ORDER BY p.purchase_date DESC";
-        return executeQuery(sql, Date.valueOf(from), Date.valueOf(to));
+        return executeQuery(sql, java.sql.Date.valueOf(from), java.sql.Date.valueOf(to));
     }
 
     /** Current inventory report — all medicines with total stock. */

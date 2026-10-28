@@ -454,32 +454,41 @@ public class MedicineDAO {
     // Helper SQL builder
     // ─────────────────────────────────────────────────────────
 
-    private String buildMedicineSelectSql(String whereOrderClause) {
-        return "SELECT m.id, m.name, m.category_id, m.supplier_id, m.manufacturer, " +
-               "m.description, m.unit, m.min_stock_level, m.created_at, m.updated_at, " +
-               "c.name AS category_name, s.name AS supplier_name, " +
-               "COALESCE(SUM(CASE WHEN mb.expiry_date >= CURDATE() THEN mb.quantity ELSE 0 END), 0) AS total_qty " +
-               "FROM medicines m " +
-               "LEFT JOIN categories c ON c.id = m.category_id " +
-               "LEFT JOIN suppliers s ON s.id = m.supplier_id " +
-               "LEFT JOIN medicine_batches mb ON mb.medicine_id = m.id " +
-               whereOrderClause.replace("WHERE", "WHERE m.") // handle plain WHERE
-               .replace("GROUP BY", "GROUP BY m.id " + whereOrderClause) // simplified placeholder
-               + " " +
-               (whereOrderClause.contains("WHERE") ? "GROUP BY m.id " : "GROUP BY m.id ") +
-               (whereOrderClause.contains("ORDER") ? "" : "ORDER BY m.name");
-    }
+    private String buildMedicineSelectSql(String conditionAndOrder) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT m.id, m.name, m.category_id, m.supplier_id, m.manufacturer, ")
+          .append("m.description, m.unit, m.min_stock_level, m.created_at, m.updated_at, ")
+          .append("c.name AS category_name, s.name AS supplier_name, ")
+          .append("COALESCE(SUM(CASE WHEN mb.expiry_date >= CURDATE() THEN mb.quantity ELSE 0 END), 0) AS total_qty ")
+          .append("FROM medicines m ")
+          .append("LEFT JOIN categories c ON c.id = m.category_id ")
+          .append("LEFT JOIN suppliers s ON s.id = m.supplier_id ")
+          .append("LEFT JOIN medicine_batches mb ON mb.medicine_id = m.id ");
 
-    // Fix: proper SQL builder without the above approximation
-    private String getMedicineBaseSql() {
-        return "SELECT m.id, m.name, m.category_id, m.supplier_id, m.manufacturer, " +
-               "m.description, m.unit, m.min_stock_level, m.created_at, m.updated_at, " +
-               "c.name AS category_name, s.name AS supplier_name, " +
-               "COALESCE(SUM(CASE WHEN mb.expiry_date >= CURDATE() THEN mb.quantity ELSE 0 END), 0) AS total_qty " +
-               "FROM medicines m " +
-               "LEFT JOIN categories c ON c.id = m.category_id " +
-               "LEFT JOIN suppliers s ON s.id = m.supplier_id " +
-               "LEFT JOIN medicine_batches mb ON mb.medicine_id = m.id ";
+        if (conditionAndOrder == null || conditionAndOrder.trim().isEmpty()) {
+            sb.append("GROUP BY m.id ORDER BY m.name");
+            return sb.toString();
+        }
+
+        String clause = conditionAndOrder.trim();
+        String upper = clause.toUpperCase();
+
+        if (upper.startsWith("WHERE")) {
+            int orderIndex = upper.indexOf("ORDER BY");
+            if (orderIndex != -1) {
+                String wherePart = clause.substring(0, orderIndex).trim();
+                String orderPart = clause.substring(orderIndex).trim();
+                sb.append(" ").append(wherePart).append(" GROUP BY m.id ").append(orderPart);
+            } else {
+                sb.append(" ").append(clause).append(" GROUP BY m.id");
+            }
+        } else if (upper.startsWith("ORDER BY")) {
+            sb.append(" GROUP BY m.id ").append(clause);
+        } else {
+            sb.append(" ").append(clause).append(" GROUP BY m.id");
+        }
+
+        return sb.toString();
     }
 
     private Medicine mapMedicineRow(ResultSet rs) throws SQLException {
